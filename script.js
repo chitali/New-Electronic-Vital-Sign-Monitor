@@ -30,8 +30,10 @@ for(var i=0; i<(sliders.length); i++) {
 **Description:Opens Dropdown of current model sliders
 ****************************************************************/
 function currentModel(event){
-    document.getElementById("cur").style.display = "block";
-    document.getElementById("new").style.display = "none";
+    document.getElementById("cur").style.pointerEvents = "auto";
+    document.getElementById("cur").style.opacity = 1;
+    document.getElementById("new").style.pointerEvents = "none";
+    document.getElementById("new").style.opacity = 0.4;
     model = 1;
     console.log("The element at index is:", model);
 }
@@ -41,8 +43,11 @@ function currentModel(event){
 **Description:Opens Dropdown of new model sliders
 ****************************************************************/
 function newModel(event){
-    document.getElementById("new").style.display = "block";
-    document.getElementById("cur").style.display = "none";
+    document.getElementById("new").style.pointerEvents = "auto";
+    document.getElementById("new").style.opacity = 1;
+
+    document.getElementById("cur").style.pointerEvents = "none";
+    document.getElementById("cur").style.opacity = 0.4;
     model = 2;
     console.log("The element at index is:", model);
 }
@@ -95,6 +100,55 @@ function playCurModelAudio() {
 }
 
 /***************************************************************
+**Name:playNewModelAudio
+**Description: Plays a single beep that interpolates two different oscillators
+**Resource: 
+****Description: Adapted from brower-beep node modules 
+****URL: https://www.npmjs.com/package/browser-beep
+****************************************************************/
+function playNewModelAudio(){
+    var o2content = sliders[4].value / 100
+    var context = new AudioContext();
+    var currentTime = context.currentTime;
+    var osc = context.createOscillator();
+    var osc1 = context.createOscillator();
+    var gain = context.createGain();
+    var oscGain = context.createGain();
+    var oscGain1 = context.createGain();
+
+    osc.connect(oscGain);
+    osc1.connect(oscGain1);
+    oscGain.connect(gain);
+    oscGain1.connect(gain);
+    gain.connect(context.destination)
+    oscGain.gain.value = o2content;
+    oscGain1.gain.value = 1- o2content;
+
+    gain.gain.setValueAtTime(gain.gain.value, currentTime)
+    gain.gain.exponentialRampToValueAtTime(RAMP_VALUE, currentTime + RAMP_DURATION)
+
+    osc.onended = function () {
+    gain.disconnect(context.destination)
+    oscGain1.disconnect(gain)
+    oscGain.disconnect(gain)
+    osc.disconnect(oscGain)
+    osc1.disconnect(oscGain1)
+    }
+
+    osc.type = 'sine'
+    osc1.type='square'
+    osc.frequency.value = frequencySetter()
+    osc1.frequency.value = frequencySetter()
+    osc.start(currentTime)
+    osc1.start(currentTime)
+    osc.stop(currentTime + RAMP_DURATION)
+    osc1.stop(currentTime + RAMP_DURATION)
+
+}
+
+
+
+/***************************************************************
 **Name:stopBtn.addEventListener
 **Description: If the stop button is clicked set stopclicked to true to end loop
 ****************************************************************/
@@ -115,40 +169,52 @@ function beep () {
     var interfaceValues = document.getElementById('labels');
     var oxygenValue = document.getElementsByClassName('o2');
     var displayValue = document.getElementsByClassName('val'); 
+
     (function loop () {
-        if(model === 1){
-            interval = (60 / sliders[0].value) * 1000;
-            displayValue[0].textContent = sliders[0].value;
-            displayValue[1].textContent = sliders[1].value;
-            interfaceValues.style.display = 'block';
-            oxygenValue[0].style.display = 'none';
-        }
-        else if (model === 2){
-            interval = (60 / sliders[2].value) * 1000;
-            displayValue[0].textContent = sliders[2].value;
-            displayValue[1].textContent = sliders[3].value;
-            displayValue[2].textContent = sliders[4].value;
-            interfaceValues.style.display = 'block';
-            oxygenValue[0].style.display = 'block';
-        }
         if (stopclicked === true){
             stopclicked = false;
             return 0;
         }
-        else if(sliders[0].value != 0){
-            sliders[0].removeEventListener('input', loop);
-            if (model===1) playCurModelAudio();
-            else if (model === 2){
-
-            }
-            setTimeout(loop, interval)
-        }
         else{
-            sliders[0].addEventListener('input', loop); 
+            if(model === 1){
+                interval = (60 / sliders[0].value) * 1000;
+                displayValue[0].textContent = sliders[0].value;
+                displayValue[1].textContent = sliders[1].value;
+                interfaceValues.style.display = 'block';
+                oxygenValue[0].style.display = 'none';
+
+                if(sliders[0].value != 0){
+                    sliders[0].removeEventListener('input', loop);
+                    playCurModelAudio();
+                    setTimeout(loop, interval)
+                }
+                else{
+                    sliders[0].addEventListener('input', loop); 
+                }
+            }
+            else if (model === 2){
+                interval = (60 / sliders[2].value) * 1000;
+                displayValue[0].textContent = sliders[2].value;
+                displayValue[1].textContent = sliders[3].value;
+                displayValue[2].textContent = sliders[4].value;
+                interfaceValues.style.display = 'block';
+                oxygenValue[0].style.display = 'block';
+
+                if(sliders[2].value != 0){
+                    sliders[2].removeEventListener('input', loop);
+                    playNewModelAudio();
+                    setTimeout(loop, interval)
+                }
+                else{
+                    sliders[2].addEventListener('input', loop); 
+                }
+                
+            }
         }
+        
+         
     })(0)
 }
-
 /***************************************************************
 **Name:frequencySetter
 **Description: Determines which frequency should be played depending on Blood Pressure

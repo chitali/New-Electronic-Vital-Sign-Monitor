@@ -4,55 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" media="screen">
-    <script src="https://kit.fontawesome.com/9c26148ee2.js" crossorigin="anonymous"></script>
-    <script src= 'script.js' defer></script>
+    <!--<script src="https://kit.fontawesome.com/9c26148ee2.js" crossorigin="anonymous"></script>
+    -->
+        <script src= 'script.js' defer></script>
     <title>Document</title>
 </head>
 <body>
    <h1> New and Old EKG Interface Comparision</h1>
-
-   <button id='current-model'> Current Model </button><br>
-   <div id= cur hidden>
-       <div class=sliders> 
-           <label> Heart Rate</label><br>
-            <input type="range" min= 0 max= 300 value =80 class=slider id=slider1>
-            <span class= slider-value id=slider1val> 80 </span>
-            <span class= slider-value> bmp</span>
-        </div>
-        <div class=sliders> 
-            <label> Blood Pressure</label><br>
-             <input type="range" min= 0 max= 250 value =120 class=slider id=slider2>
-             <span class= slider-value id=slider2val> 120 </span>
-             <span class= slider-value> mmHg</span>
-         </div>
+   <div class = 'both-models-values'>
+    <div class = 'model-section'> 
+        <button id='current-model'> Current Model </button><br>
+        <div id= cur>
+            <div class=sliders> 
+                <label> Heart Rate</label><br>
+                    <input type="range" min= 0 max= 300 value =80 class=slider id=slider1>
+                    <span class= slider-value id=slider1val> 80 </span>
+                    <span class= slider-value> bmp</span>
+                </div>
+                <div class=sliders> 
+                    <label> Blood Pressure</label><br>
+                    <input type="range" min= 0 max= 250 value =120 class=slider id=slider2>
+                    <span class= slider-value id=slider2val> 120 </span>
+                    <span class= slider-value> mmHg</span>
+                </div>
+            </div>
     </div>
 
-    <button id="new-model"> New Model </button><br>
+    <div class = 'model-section'> 
+            <button id="new-model"> New Model </button><br>
+            <div id= new>
+                <div class=sliders> 
+                    <label> Heart Rate</label><br>
+                    <input type="range" min= 0 max= 300 value =80 class=slider id=slider3>
+                    <span class= slider-value id=slider3val> 80 </span>
+                    <span class= slider-value> bmp</span>
+                </div>
+                <div class=sliders> 
+                    <label> Blood Pressure</label><br>
+                    <input type="range" min= 0 max= 250 value =120 class=slider id=slider4>
+                    <span class= slider-value id=slider4val> 120 </span>
+                    <span class= slider-value> mmHg</span>
+                </div>
+                <div class=sliders> 
+                    <label> Oxygen Content</label><br>
+                    <input type="range" min= 0 max= 100 value =100 class=slider id=slider5>
+                    <span class= slider-value id=slider5val> 100 </span>
+                    <span class= slider-value> %</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div id= new hidden>
-        <div class=sliders> 
-            <label> Heart Rate</label><br>
-             <input type="range" min= 0 max= 300 value =80 class=slider id=slider3>
-             <span class= slider-value id=slider3val> 80 </span>
-             <span class= slider-value> bmp</span>
-         </div>
-         <div class=sliders> 
-             <label> Blood Pressure</label><br>
-              <input type="range" min= 0 max= 250 value =120 class=slider id=slider4>
-              <span class= slider-value id=slider4val> 120 </span>
-              <span class= slider-value> mmHg</span>
-          </div>
-          <div class=sliders> 
-            <label> Oxygen Content</label><br>
-             <input type="range" min= 0 max= 100 value =100 class=slider id=slider5>
-             <span class= slider-value id=slider5val> 100 </span>
-             <span class= slider-value> %</span>
-         </div>
-     </div>
+    <button class = 'start-stop' id='play'> Play </button>
 
-    <button id='play'> Play </button>
-
-    <button id='stop' hidden> Stop </button>
+    <button class = 'start-stop' id='stop' hidden> Stop </button>
 
     <span id=warning></span>
 
