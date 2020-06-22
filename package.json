@@ -1,0 +1,28 @@
+{
+  "name": "research-interface",
+  "version": "1.0.0",
+  "description": "Deep Audio Interpolation",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chitali/Research-Interface.git"
+  },
+  "keywords": [
+    "Heartbeat"
+  ],
+  "author": "Chitali Buge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chitali/Research-Interface/issues"
+  },
+  "homepage": "https://github.com/chitali/Research-Interface#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.4",
+    "handlebars": "^4.7.6"
+  }
+}

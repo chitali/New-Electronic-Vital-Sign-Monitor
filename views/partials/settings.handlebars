@@ -1,0 +1,46 @@
+ <div class = 'both-models-values'>
+    <div class = 'model-section'> 
+        <button id='current-model'> Current Model </button><br>
+        <div id= cur>
+            <div class=sliders> 
+                <label> Heart Rate</label><br>
+                    <input type="range" min= 0 max= 300 value =80 class=slider id=slider1>
+                    <span class= slider-value id=slider1val> 80 </span>
+                    <span class= slider-value> bmp</span>
+                </div>
+                <div class=sliders> 
+                    <label> Blood Pressure</label><br>
+                    <input type="range" min= 0 max= 250 value =120 class=slider id=slider2>
+                    <span class= slider-value id=slider2val> 120 </span>
+                    <span class= slider-value> mmHg</span>
+                </div>
+            </div>
+    </div>
+
+    <div class = 'model-section'> 
+            <button id="new-model"> New Model </button><br>
+            <div id= new>
+                <div class=sliders> 
+                    <label> Heart Rate</label><br>
+                    <input type="range" min= 0 max= 300 value =80 class=slider id=slider3>
+                    <span class= slider-value id=slider3val> 80 </span>
+                    <span class= slider-value> bmp</span>
+                </div>
+                <div class=sliders> 
+                    <label> Blood Pressure</label><br>
+                    <input type="range" min= 0 max= 250 value =120 class=slider id=slider4>
+                    <span class= slider-value id=slider4val> 120 </span>
+                    <span class= slider-value> mmHg</span>
+                </div>
+                {{#if instrument}}
+                    {{> instrumentType}}
+                {{/if}}
+                <div class=sliders> 
+                    <label> Oxygen Content</label><br>
+                    <input type="range" min= 0 max= 100 value =100 class=slider id=slider5>
+                    <span class= slider-value id=slider5val> 100 </span>
+                    <span class= slider-value> %</span>
+                </div>
+            </div>
+        </div>
+    </div>
