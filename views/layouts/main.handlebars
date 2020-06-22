@@ -7,6 +7,11 @@
         <!-- This 3rd-party stylesheet incorporates SVG icons from Font Awesome: http://fontawesome.com/ -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" crossorigin="anonymous">
         <script src= 'script.js' defer></script>
+        {{#if instrument}}
+            <script src= 'instruments.js' defer></script>
+            {{else}}
+                <script src= 'oscillators.js' defer></script>
+        {{/if}}
         <title>Deep Audio Interpolation</title>
     </head>
     <body>
