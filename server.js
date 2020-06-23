@@ -25,6 +25,7 @@ app.get('/instrument', function (req, res, next) {
 });
 app.get('*', function (req, res, next) {
     res.render('404');
+    res.status(404);
   
   });
 

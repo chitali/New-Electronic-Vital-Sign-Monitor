@@ -64,7 +64,7 @@ function play(){
     if(model === 0){
         alert("Please Choose A Model");
     }
-    else if (checkifInstrumentSelected() == true){ 
+    else if (model == 1 || checkifInstrumentSelected() == true){ 
         playBtn.style.display = 'none';
         stopBtn.style.display = 'block';
         beep();
@@ -136,4 +136,24 @@ function beep () {
         
          
     })(0)
+}
+/***************************************************************
+**Name:o2range
+**Description: Determines the oxygen amount for each range
+****************************************************************/
+function o2range(){
+    var o2 = sliders[4].value;
+    var oxygenValue;
+    if(o2>= 0 && o2 < 85) oxygenValue = 0;
+    else if(o2>= 85 && o2 < 86) oxygenValue = 0.1;
+    else if(o2>= 86 && o2 < 88) oxygenValue = 0.2;
+    else if(o2>= 88 && o2 < 90) oxygenValue = 0.3;
+    else if(o2>= 90 && o2 < 91) oxygenValue = 0.4;
+    else if(o2>= 91 && o2 < 93) oxygenValue = 0.5;
+    else if(o2>= 93 && o2 < 95) oxygenValue = 0.6;
+    else if(o2>= 95 && o2 < 96) oxygenValue = 0.7;
+    else if(o2>= 96 && o2 < 98) oxygenValue = 0.8;
+    else if(o2>= 98 && o2 < 100) oxygenValue = 0.9;
+    else if(o2 == 100) oxygenValue = 1;
+   return oxygenValue;
 }
