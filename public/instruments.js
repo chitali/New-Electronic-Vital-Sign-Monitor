@@ -28,6 +28,7 @@ function playNewModelAudio(){
     if((instrument[0].value == 'Cello' || instrument[0].value == 'Horn') && (instrument[1].value == 'Cello' ||instrument[1].value == 'Horn')) audioFolder = 'Cello+Horn';
     audioPath = audioFolder + '/Pitch'+ pitch + '_' + o2content('C', 'H') + '.wav';
     var audio = new Audio(audioPath);
+    console.log(audioPath);
     audio.play();
 }
 

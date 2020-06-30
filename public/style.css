@@ -54,7 +54,62 @@ h1{
     margin: 0px;
     color: #116466;
 }
+/*
+** Home Page
+*/
+.links{
+    text-decoration: none;
+    color: white;
+    outline: 0px;
+    width: 100%;
+    margin: 2%;
+    background-color: #116466;
+    padding: 30px;
+    border-radius: 4px;
+}
+.home-title{
+    font-size: 50px;
+}
+.website-description{
+    text-align: center;
+    font-size: 40px;
+    font-weight: 400;
+    margin: 0px;
+    margin-top: 1%;
+    color: #116466;
+}
+.website-sub-description{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 100;
+    margin: 0% 10%;
+    margin-bottom: 40px;
+    color: #116466;
+}
+.webpage-option-container{
+    display: flex;
+    justify-content: center;
+}
 
+.links:hover{
+    background-color: #2c3531;
+    color: white;
+    transform: scale(1.08);
+	transition-duration: .20s;
+}
+.webpage-title{
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+.description{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 100;
+}
+/*
+** Oscillators and Instruments page
+*/
 .both-models-values{
     display: flex;
     justify-content: center;
@@ -158,9 +213,33 @@ button:hover{
     font-weight: 300;
 
 }
+/*
+**Tools Page
+*/
+.table-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-row-gap: 3px;
+    margin: 2%;
+    text-align: center;
+    margin-bottom: 3%;
+
+}
+.table-container div{
+    border-top: 1px solid #eee;
+}
+div.table-label{
+    background-color: #116466;
+    color: white;
+    padding: 3px;
+}
+div.first-row{
+    border-top: none ;
+}
+
 
 /*
-Error Page
+**Error Page
 */
 .error-container {
     margin-top: 50px;

@@ -10,18 +10,29 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
 app.get(['/home', '/'], function (req, res, next) {
-    res.render('home');
+    res.render('home',{
+      oscillator: false,
+    instrument: false
+    });
 });
 
-app.get('/oscillator', function (req, res, next) {
-  res.render('oscillator');
+app.get('/oscillators', function (req, res, next) {
+  res.render('oscillator', {
+    oscillator: true,
+    instrument: false
+  });
 
 });
-app.get('/instrument', function (req, res, next) {
+app.get('/instruments', function (req, res, next) {
     res.render('instrument',{
-      instrument: true
+      instrument: true,
+      oscillator: false
     });
   
+});
+app.get('/tools', function (req, res, next) {
+  res.render('tool');
+
 });
 app.get('*', function (req, res, next) {
     res.render('404');
