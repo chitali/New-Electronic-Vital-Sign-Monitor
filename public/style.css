@@ -4,7 +4,6 @@ body{
 }
 .header{
     display: flex;
-    
     background: #2c3531;
     padding: 30px;
     margin-left: -10px;
@@ -231,12 +230,16 @@ button:hover{
 div.table-label{
     background-color: #116466;
     color: white;
-    padding: 3px;
+    padding: 5px;
 }
 div.first-row{
     border-top: none ;
 }
-
+/*
+Heart Rate Monitor
+Electronic vital sign monitors 
+https://www.soundsnap.com/tags/hospital_machines 
+*/
 
 /*
 **Error Page
