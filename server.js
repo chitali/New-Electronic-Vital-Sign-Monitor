@@ -34,6 +34,10 @@ app.get('/tools', function (req, res, next) {
   res.render('tool');
 
 });
+app.get('/about', function (req, res, next) {
+  res.render('about');
+
+});
 app.get('*', function (req, res, next) {
     res.render('404');
     res.status(404);

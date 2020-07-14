@@ -98,6 +98,10 @@ function beep () {
             return 0;
         }
         else{
+           /* waiting();
+            endOfWaitng();
+            peak();*/
+            graphing();
             if(model === 1){
                 interval = (60 / sliders[0].value) * 1000;
                 displayValue[0].textContent = sliders[0].value;
@@ -125,7 +129,9 @@ function beep () {
                 if(sliders[2].value != 0){
                     sliders[2].removeEventListener('input', loop);
                     playNewModelAudio();
+                    //pause(interval);
                     setTimeout(loop, interval)
+                    
                 }
                 else{
                     sliders[2].addEventListener('input', loop); 
@@ -137,6 +143,18 @@ function beep () {
          
     })(0)
 }
+/*
+function pause(interval){
+    var d = new Date()
+    var n = d.getTime();
+    var endtime = n + interval;
+   while(new Date().getTime() != endtime){
+        console.log(new Date().getTime());
+        console.log("end time", endtime);
+
+    }
+    console.log("DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+}*/
 /***************************************************************
 **Name:o2range
 **Description: Determines the oxygen amount for each range
@@ -144,16 +162,125 @@ function beep () {
 function o2range(){
     var o2 = sliders[4].value;
     var oxygenValue;
-    if(o2>= 0 && o2 < 85) oxygenValue = 0;
-    else if(o2>= 85 && o2 < 86) oxygenValue = 0.1;
-    else if(o2>= 86 && o2 < 88) oxygenValue = 0.2;
+    if(o2>= 0 && o2 < 80) oxygenValue = 0;
+    else if(o2>= 80 && o2 < 85) oxygenValue = 0.1;
+    else if(o2>= 85 && o2 < 88) oxygenValue = 0.2;
     else if(o2>= 88 && o2 < 90) oxygenValue = 0.3;
     else if(o2>= 90 && o2 < 91) oxygenValue = 0.4;
-    else if(o2>= 91 && o2 < 93) oxygenValue = 0.5;
-    else if(o2>= 93 && o2 < 95) oxygenValue = 0.6;
+    else if(o2>= 91 && o2 < 92) oxygenValue = 0.5;
+    else if(o2>= 92 && o2 < 95) oxygenValue = 0.6;
     else if(o2>= 95 && o2 < 96) oxygenValue = 0.7;
     else if(o2>= 96 && o2 < 98) oxygenValue = 0.8;
     else if(o2>= 98 && o2 < 100) oxygenValue = 0.9;
     else if(o2 == 100) oxygenValue = 1;
    return oxygenValue;
 }
+
+/*
+graph
+*/
+
+var canvas = document.getElementById("graph");
+var interfaceContainer = document.getElementById('interface').scrollWidth;
+console.log(interfaceContainer);
+interfaceContainer *= .75
+canvas.width = interfaceContainer;
+window.addEventListener("resize", canvasResize);
+
+function canvasResize(){
+    interfaceContainer = document.getElementById('interface').scrollWidth;
+    console.log(interfaceContainer);
+    interfaceContainer *= .75
+    canvas.width = interfaceContainer;
+
+}
+
+var ctx = canvas.getContext("2d");
+var x = 0;
+ctx.moveTo(0,75);
+ctx.lineWidth = 0.7;
+/*
+function waiting(){
+    if(x >= 350){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        x= 0;
+    }
+    ctx.lineTo(x+=10,75);
+    ctx.stroke();
+}
+function endOfWaitng(){
+    ctx.moveTo(x,75);
+    ctx.lineTo(x+=10,60);
+    ctx.lineTo(x+=10,90);
+    ctx.stroke();
+}
+function peak(){
+    ctx.lineTo(x+=10,20);
+    ctx.lineTo(x+=10, 120);
+    ctx.stroke();
+}
+function continuing(){
+    ctx.lineTo(x+=10, 75);
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10, 60);
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10,75);
+    ctx.stroke();
+}
+
+function graphing(){
+    if(x + 100 >= canvas.width){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        x=0;
+        ctx.moveTo(0,75);
+        ctx.beginPath();
+        ctx.lineWidth = 0.5;
+
+    }
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10,60);
+    ctx.lineTo(x+=10,90);
+    ctx.lineTo(x+=10,20);
+    ctx.lineTo(x+=10, 120);
+    ctx.lineTo(x+=10, 75);
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10, 60);
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10,75);
+    ctx.stroke();
+
+}*/
+var count = 0;
+function graphing(){
+    if(x + 100 >= canvas.width){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        x=0;
+        ctx.moveTo(0,75);
+        ctx.beginPath();
+        ctx.lineWidth = 0.7;
+    }
+    ctx.beginPath();
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10,60);
+    ctx.lineTo(x+=10,90);
+    ctx.lineTo(x+=10,20);
+    ctx.lineTo(x+=10, 120);
+    ctx.lineTo(x+=10, 75);
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10, 60);
+    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=10,75);
+    x = x-10;
+    console.log(x);
+    ctx.stroke();
+    count++;
+    if(count % 2 == 0){
+        ctx.closePath();
+        console.log("tst", count);
+        console.log("rem", count%2);
+    }
+
+    
+}
+//graphing();
