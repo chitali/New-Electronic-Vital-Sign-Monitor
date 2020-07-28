@@ -14,7 +14,26 @@
                     <span class= slider-value id=slider2val> 120 </span>
                     <span class= slider-value> mmHg</span>
                 </div>
-            </div>
+                <div class=sliders> 
+                    <label> Oxygen Content</label><br>
+                    <input type="range" min= 0 max= 100 value =100 class=slider id=slider3>
+                    <span class= slider-value id=slider3val> 100 </span>
+                    <span class= slider-value> SpO2</span>
+                </div>
+                <div class=sliders> 
+                    <label> Respiratory Rate</label><br>
+                    <input type="range" min= 0 max= 100 value =14 step=0.1 class=slider id=slider4>
+                    <span class= slider-value id=slider4val> 14 </span>
+                    <span class= slider-value> rpm </span>
+                </div>
+                <div class=sliders> 
+                    <label> Body Temperature</label><br>
+                    <input type="range" min= 55 max= 115 value =98.6 step=0.1 class=slider id=slider5>
+                    <span class= slider-value id=slider5val> 98.6 °F / 37 °C </span>
+                </div>
+
+        </div>
+            
     </div>
 
     <div class = 'model-section'> 
@@ -22,14 +41,14 @@
             <div id= new>
                 <div class=sliders> 
                     <label> Heart Rate</label><br>
-                    <input type="range" min= 0 max= 300 value =80 class=slider id=slider3>
-                    <span class= slider-value id=slider3val> 80 </span>
+                    <input type="range" min= 0 max= 300 value =80 class=slider id=slider6>
+                    <span class= slider-value id=slider6val> 80 </span>
                     <span class= slider-value> bmp</span>
                 </div>
                 <div class=sliders> 
                     <label> Blood Pressure</label><br>
-                    <input type="range" min= 0 max= 250 value =120 class=slider id=slider4>
-                    <span class= slider-value id=slider4val> 120 </span>
+                    <input type="range" min= 0 max= 250 value =120 class=slider id=slider7>
+                    <span class= slider-value id=slider7val> 120 </span>
                     <span class= slider-value> mmHg</span>
                 </div>
                 {{#if instrument}}
@@ -37,9 +56,20 @@
                 {{/if}}
                 <div class=sliders> 
                     <label> Oxygen Content</label><br>
-                    <input type="range" min= 0 max= 100 value =100 class=slider id=slider5>
-                    <span class= slider-value id=slider5val> 100 </span>
-                    <span class= slider-value> %</span>
+                    <input type="range" min= 0 max= 100 value =100 class=slider id=slider8>
+                    <span class= slider-value id=slider8val> 100 </span>
+                    <span class= slider-value> SpO2</span>
+                </div>
+                <div class=sliders> 
+                    <label> Respiratory Rate</label><br>
+                    <input type="range" min= 0 max= 100 value =14 step=0.1 class=slider id=slider9>
+                    <span class= slider-value id=slider9val> 14 </span>
+                    <span class= slider-value> rpm </span>
+                </div>
+                <div class=sliders> 
+                    <label> Body Temperature</label><br>
+                    <input type="range" min= 55 max= 115 value = 98.6 step=0.1 class=slider id=slider10>
+                    <span class= slider-value id=slider10val> 98.6 °F / 37 °C</span>
                 </div>
             </div>
         </div>

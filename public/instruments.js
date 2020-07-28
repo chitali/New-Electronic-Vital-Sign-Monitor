@@ -28,7 +28,6 @@ function playNewModelAudio(){
     if((instrument[0].value == 'Cello' || instrument[0].value == 'Horn') && (instrument[1].value == 'Cello' ||instrument[1].value == 'Horn')) audioFolder = 'Cello+Horn';
     audioPath = audioFolder + '/Pitch'+ pitch + '_' + o2content('C', 'H') + '.wav';
     var audio = new Audio(audioPath);
-    console.log(audioPath);
     audio.play();
 }
 
@@ -56,12 +55,11 @@ function frequencySetter(){
     var bp;
     var frequency;
     if(model === 1) bp = sliders[1].value;
-    else if(model === 2) bp = sliders[3].value;
+    else if(model === 2) bp = sliders[6].value;
 
     frequency = Math.floor(bp / 10 - 1); 
     if (frequency < 1) frequency =  1;
     if (frequency > 20) frequency =  20;
-    console.log(frequency);
     return String(frequency);
 }
 
@@ -80,7 +78,6 @@ function o2content(a, b){
     else{
         fileNamePart = a + O2 + b + CO2;
     }
-    console.log(fileNamePart);
     return fileNamePart;
 }
 

@@ -13,6 +13,18 @@ var model = 0;
 var playBtn = document.getElementById("play");
 var stopBtn= document.getElementById('stop');
 
+var canvas = document.getElementById("graph");
+var interfaceContainer = document.getElementById('interface').scrollWidth;
+interfaceContainer *= .75
+canvas.width = interfaceContainer;
+window.addEventListener("resize", canvasResize);
+
+var ctx = canvas.getContext("2d");
+var x = 0;
+ctx.moveTo(0,75);
+ctx.lineWidth = 0.7;
+var count = 0;
+
 /*
 **Event Listeners
 */
@@ -21,7 +33,13 @@ newModelBtn.addEventListener('click', newModel);
 playBtn.addEventListener('click', play);
 for(var i=0; i<(sliders.length); i++) {
     sliders[i].addEventListener('input', function() {
-        document.getElementById(this.getAttribute('id')+'val').textContent = this.value;
+        var tempSlider = this.getAttribute('id')+'val';
+        document.getElementById(tempSlider).textContent = this.value;
+        if(tempSlider == 'slider5val' || tempSlider == 'slider10val'){
+            var celsius = (this.value - 32) * (5/9);
+            celsius = Math.round(celsius * 10) / 10
+            document.getElementById(tempSlider).textContent = this.value + "°F / " + celsius + "°C";
+        }
   });
 }
 
@@ -37,7 +55,6 @@ function currentModel(event){
     document.getElementById("new").style.opacity = 0.4;
     newModelBtn.style.backgroundColor = "#116466";
     model = 1;
-    console.log("The element at index is:", model);
 }
 
 /***************************************************************
@@ -53,7 +70,6 @@ function newModel(event){
     currentModelBtn.style.backgroundColor = "#116466";
 
     model = 2;
-    console.log("The element at index is:", model);
 }
 
 /***************************************************************
@@ -74,11 +90,17 @@ function play(){
 **Name:stopBtn.addEventListener
 **Description: If the stop button is clicked set stopclicked to true to end loop
 ****************************************************************/
-stopBtn.addEventListener('click', function (){
+stopBtn.addEventListener('click', stopClicked);
+function stopClicked(){
     playBtn.style.display = 'block';
     stopBtn.style.display = 'none';
+    var temp = document.getElementsByClassName('instuments-type');
+    if(temp[0]){
+        temp[0].disabled = false;
+        temp[1].disabled = false;
+    } 
     stopclicked = true;
- });
+ }
 
 /***************************************************************
 **Name:beep
@@ -89,52 +111,66 @@ stopBtn.addEventListener('click', function (){
 function beep () {
     var interval;
     var interfaceValues = document.getElementById('labels');
-    var oxygenValue = document.getElementsByClassName('o2');
     var displayValue = document.getElementsByClassName('val'); 
 
     (function loop () {
+        if (model == 2 && checkifInstrumentSelected() == false){ 
+            stopClicked();
+            return;
+        }
         if (stopclicked === true){
             stopclicked = false;
             return 0;
         }
         else{
-           /* waiting();
-            endOfWaitng();
-            peak();*/
-            graphing();
             if(model === 1){
                 interval = (60 / sliders[0].value) * 1000;
                 displayValue[0].textContent = sliders[0].value;
                 displayValue[1].textContent = sliders[1].value;
+                displayValue[2].textContent = sliders[2].value;
+                displayValue[3].textContent = sliders[3].value;
+                displayValue[4].textContent = sliders[4].value;
+                var celsius = (sliders[4].value - 32) * (5/9);
+                celsius = Math.round(celsius * 10) / 10;
+                document.getElementById('temps').textContent = "°F  (" + celsius + "°C)"
                 interfaceValues.style.display = 'block';
-                oxygenValue[0].style.display = 'none';
 
                 if(sliders[0].value != 0){
+                    graphing(interval);
                     sliders[0].removeEventListener('input', loop);
                     playCurModelAudio();
                     setTimeout(loop, interval)
                 }
                 else{
-                    sliders[0].addEventListener('input', loop); 
+                    dead(); 
+                    sliders[0].addEventListener('input', loop);
                 }
             }
             else if (model === 2){
-                interval = (60 / sliders[2].value) * 1000;
-                displayValue[0].textContent = sliders[2].value;
-                displayValue[1].textContent = sliders[3].value;
-                displayValue[2].textContent = sliders[4].value;
-                interfaceValues.style.display = 'block';
-                oxygenValue[0].style.display = 'block';
+                var temp = document.getElementsByClassName('instuments-type');
+                if(temp[0]){
+                    var temp = document.getElementsByClassName('instuments-type');
+                    temp[0].disabled = true;
+                    temp[1].disabled = true;
+                }
+                interval = (60 / sliders[5].value) * 1000;
+                graphing(interval);
+                displayValue[0].textContent = sliders[5].value;
+                displayValue[1].textContent = sliders[6].value;
+                displayValue[2].textContent = sliders[7].value;
+                displayValue[3].textContent = sliders[8].value;
+                displayValue[4].textContent = sliders[9].value;
 
-                if(sliders[2].value != 0){
-                    sliders[2].removeEventListener('input', loop);
+                interfaceValues.style.display = 'block';
+
+                if(sliders[5].value != 0){
+                    sliders[5].removeEventListener('input', loop);
                     playNewModelAudio();
-                    //pause(interval);
                     setTimeout(loop, interval)
                     
                 }
                 else{
-                    sliders[2].addEventListener('input', loop); 
+                    sliders[5].addEventListener('input', loop); 
                 }
                 
             }
@@ -143,24 +179,13 @@ function beep () {
          
     })(0)
 }
-/*
-function pause(interval){
-    var d = new Date()
-    var n = d.getTime();
-    var endtime = n + interval;
-   while(new Date().getTime() != endtime){
-        console.log(new Date().getTime());
-        console.log("end time", endtime);
 
-    }
-    console.log("DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-}*/
 /***************************************************************
 **Name:o2range
 **Description: Determines the oxygen amount for each range
 ****************************************************************/
 function o2range(){
-    var o2 = sliders[4].value;
+    var o2 = sliders[7].value;
     var oxygenValue;
     if(o2>= 0 && o2 < 80) oxygenValue = 0;
     else if(o2>= 80 && o2 < 85) oxygenValue = 0.1;
@@ -180,78 +205,21 @@ function o2range(){
 graph
 */
 
-var canvas = document.getElementById("graph");
-var interfaceContainer = document.getElementById('interface').scrollWidth;
-console.log(interfaceContainer);
-interfaceContainer *= .75
-canvas.width = interfaceContainer;
-window.addEventListener("resize", canvasResize);
+
 
 function canvasResize(){
     interfaceContainer = document.getElementById('interface').scrollWidth;
-    console.log(interfaceContainer);
     interfaceContainer *= .75
     canvas.width = interfaceContainer;
-
 }
+// function dead(){
+//     ctx.beginPath();
+//     ctx.lineTo(x+=10,75);
+//     ctx.lineTo(x+=10,75);
+//     ctx.stroke();
+// }
 
-var ctx = canvas.getContext("2d");
-var x = 0;
-ctx.moveTo(0,75);
-ctx.lineWidth = 0.7;
-/*
-function waiting(){
-    if(x >= 350){
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        x= 0;
-    }
-    ctx.lineTo(x+=10,75);
-    ctx.stroke();
-}
-function endOfWaitng(){
-    ctx.moveTo(x,75);
-    ctx.lineTo(x+=10,60);
-    ctx.lineTo(x+=10,90);
-    ctx.stroke();
-}
-function peak(){
-    ctx.lineTo(x+=10,20);
-    ctx.lineTo(x+=10, 120);
-    ctx.stroke();
-}
-function continuing(){
-    ctx.lineTo(x+=10, 75);
-    ctx.lineTo(x+=10,75);
-    ctx.lineTo(x+=10, 60);
-    ctx.lineTo(x+=10,75);
-    ctx.lineTo(x+=10,75);
-    ctx.stroke();
-}
-
-function graphing(){
-    if(x + 100 >= canvas.width){
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        x=0;
-        ctx.moveTo(0,75);
-        ctx.beginPath();
-        ctx.lineWidth = 0.5;
-
-    }
-    ctx.lineTo(x+=10,75);
-    ctx.lineTo(x+=10,60);
-    ctx.lineTo(x+=10,90);
-    ctx.lineTo(x+=10,20);
-    ctx.lineTo(x+=10, 120);
-    ctx.lineTo(x+=10, 75);
-    ctx.lineTo(x+=10,75);
-    ctx.lineTo(x+=10, 60);
-    ctx.lineTo(x+=10,75);
-    ctx.lineTo(x+=10,75);
-    ctx.stroke();
-
-}*/
-var count = 0;
-function graphing(){
+function graphing(interval){
     if(x + 100 >= canvas.width){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         x=0;
@@ -270,17 +238,16 @@ function graphing(){
     ctx.lineTo(x+=10,75);
     ctx.lineTo(x+=10, 60);
     ctx.lineTo(x+=10,75);
-    ctx.lineTo(x+=10,75);
+    ctx.lineTo(x+=interval/50,75);
+
     x = x-10;
-    console.log(x);
     ctx.stroke();
     count++;
     if(count % 2 == 0){
         ctx.closePath();
-        console.log("tst", count);
-        console.log("rem", count%2);
     }
 
     
 }
-//graphing();
+//https://www.youtube.com/watch?v=QjEyjmNkN3k&list=RDyEb4kojtVHw&index=3
+//https://www.youtube.com/watch?v=jcXidSeirMU&t=9s  

@@ -87,7 +87,7 @@ function frequencySetter(){
         bp = sliders[1].value
     }
     else if(model === 2){
-        bp = sliders[3].value
+        bp = sliders[6].value
     }
     if(bp>= 0 && bp< 30)frequency = 82.41; 
     else if(bp>= 30 && bp< 40) frequency = 92.50;
@@ -120,3 +120,5 @@ function frequencySetter(){
 function checkifInstrumentSelected(){
     return true;
 }
+
+

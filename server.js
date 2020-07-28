@@ -9,21 +9,21 @@ app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
-app.get(['/home', '/'], function (req, res, next) {
+app.get(['/home', '/'], function (req, res) {
     res.render('home',{
       oscillator: false,
     instrument: false
     });
 });
 
-app.get('/oscillators', function (req, res, next) {
+app.get('/oscillators', function (req, res) {
   res.render('oscillator', {
     oscillator: true,
     instrument: false
   });
 
 });
-app.get('/instruments', function (req, res, next) {
+app.get('/instruments', function (req, res) {
     res.render('instrument',{
       instrument: true,
       oscillator: false
@@ -34,11 +34,11 @@ app.get('/tools', function (req, res, next) {
   res.render('tool');
 
 });
-app.get('/about', function (req, res, next) {
+app.get('/about', function (req, res) {
   res.render('about');
 
 });
-app.get('*', function (req, res, next) {
+app.get('*', function (req, res) {
     res.render('404');
     res.status(404);
   

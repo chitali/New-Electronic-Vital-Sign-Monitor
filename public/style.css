@@ -187,28 +187,23 @@ button:hover{
     margin-left:3%;
     margin-right: 3%;
     height: 300px;
-    padding: 40px;
+    padding: 30px;
     display: flex;
 }
 #graph{
     background-color: white;
-    /*width:75%;*/
+    width:75%;
     margin-right: 40px;
+}
 
-}
-#label{
-    display:flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    font-weight: 100;
-}
 .display-value{
     color: #116466;
+    margin-top: -10px;
     padding-bottom: 20px;
-    font-size: 20px;
+    font-size: 15px;
 }
 .val{
-    font-size: 70px;
+    font-size: 50px;
     font-weight: 300;
 
 }
