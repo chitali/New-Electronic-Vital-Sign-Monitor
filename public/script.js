@@ -142,7 +142,6 @@ function beep () {
                     setTimeout(loop, interval)
                 }
                 else{
-                    dead(); 
                     sliders[0].addEventListener('input', loop);
                 }
             }
@@ -212,12 +211,7 @@ function canvasResize(){
     interfaceContainer *= .75
     canvas.width = interfaceContainer;
 }
-// function dead(){
-//     ctx.beginPath();
-//     ctx.lineTo(x+=10,75);
-//     ctx.lineTo(x+=10,75);
-//     ctx.stroke();
-// }
+
 
 function graphing(interval){
     if(x + 100 >= canvas.width){
