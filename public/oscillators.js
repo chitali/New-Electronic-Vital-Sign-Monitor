@@ -121,4 +121,35 @@ function checkifInstrumentSelected(){
     return true;
 }
 
+var ctxs;
+var os;
+function flatLine(living){
+    ctxs = new AudioContext();
+    os = ctxs.createOscillator()
+    os.connect(ctxs.destination);
+    os.start();
+    /*(function straightLine(){
+            if( living == true){
+            ctx.beginPath();
+            ctx.lineTo(x+=10,75);
+            ctx.lineTo(x+=10,75);
+            ctx.stroke();
+            if(x + 100 >= canvas.width){
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                x=0;
+                ctx.moveTo(0,75);
+                ctx.beginPath();
+                ctx.lineWidth = 0.7;
+            }
+            setTimeout(straightLine, 100)
+        }
 
+    })(0)*/
+
+      
+}
+ function isAlive(){
+     os.stop();
+     console.log("stopped")
+     living = true;
+ }

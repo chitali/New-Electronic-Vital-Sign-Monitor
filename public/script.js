@@ -19,11 +19,7 @@ interfaceContainer *= .75
 canvas.width = interfaceContainer;
 window.addEventListener("resize", canvasResize);
 
-var ctx = canvas.getContext("2d");
-var x = 0;
-ctx.moveTo(0,75);
-ctx.lineWidth = 0.7;
-var count = 0;
+
 
 /*
 **Event Listeners
@@ -100,6 +96,7 @@ function stopClicked(){
         temp[1].disabled = false;
     } 
     stopclicked = true;
+    if(living == false) isAlive();
  }
 
 /***************************************************************
@@ -108,10 +105,12 @@ function stopClicked(){
 **Resource Description: Adapted from brower-beep node modules 
 **Resource: https://www.npmjs.com/package/browser-beep
 ****************************************************************/
+var living = true;
 function beep () {
     var interval;
     var interfaceValues = document.getElementById('labels');
     var displayValue = document.getElementsByClassName('val'); 
+    
 
     (function loop () {
         if (model == 2 && checkifInstrumentSelected() == false){ 
@@ -134,15 +133,19 @@ function beep () {
                 celsius = Math.round(celsius * 10) / 10;
                 document.getElementById('temps').textContent = "°F  (" + celsius + "°C)"
                 interfaceValues.style.display = 'block';
-
                 if(sliders[0].value != 0){
+                    console.log('here');
+                    if(living == false) isAlive();
                     graphing(interval);
                     sliders[0].removeEventListener('input', loop);
                     playCurModelAudio();
                     setTimeout(loop, interval)
                 }
                 else{
+                    living = false;
                     sliders[0].addEventListener('input', loop);
+                    flatLine(living); 
+
                 }
             }
             else if (model === 2){
@@ -203,7 +206,11 @@ function o2range(){
 /*
 graph
 */
-
+var ctx = canvas.getContext("2d");
+var x = 0;
+ctx.moveTo(0,75);
+ctx.lineWidth = 0.7;
+var count = 0;
 
 
 function canvasResize(){
