@@ -35,15 +35,15 @@ h1{
 .navbar a {
     float: left;
     font-size: 17px;
+    font-weight: 100;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    color: #116466;
+    color: #e76f51;
     margin-right: 10px;
 }
 .navbar a:hover {
-    background-color: #116466;
-    color:white;
+    color: #f4a261;
 }
 
 .title{
@@ -51,11 +51,18 @@ h1{
     font-size: 35px;
     font-weight: 100;
     margin: 0px;
-    color: #116466;
+    color: #9e2a2b;
 }
 /*
 ** Home Page
 */
+.image{
+    padding: 50% 0 20% 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 9999;
+}
 .links{
     text-decoration: none;
     color: white;
@@ -109,6 +116,7 @@ h1{
 /*
 ** Oscillators and Instruments page
 */
+
 .both-models-values{
     display: flex;
     justify-content: center;
@@ -120,7 +128,7 @@ h1{
     width: 100%
 }
 button{
-    background-color: #116466;
+    background-color: #b5ba72;
     color: white;
     border: none;
     width: 100%;
@@ -142,13 +150,29 @@ button:hover{
     margin-bottom: 15px;
     margin-top: 5px;
     -webkit-appearance: none;
-    background-color: #91cfcf;
     border-radius: 10px;
     opacity: .5;
     width: 78%;
     height: 10px;
 }
+#slider1, #slider6{
+    background: linear-gradient(to right, red 11% ,yellow 13%, green 20%, yellow 30%, red 40%); 
+}
+#slider2, #slider7{
+    background: linear-gradient(to right, red 20% , yellow 30%,yellow 40%, green 49%, yellow 59%, red 70%); 
 
+}
+#slider3, #slider8{
+    background: linear-gradient(to right, red 60% , yellow 94%, green 100%); 
+}
+#slider4, #slider9{
+    background: linear-gradient(to right, red 8% , yellow 11%, green 15%,yellow 25%, red 30%); 
+
+}
+#slider5, #slider10{
+    background: linear-gradient(to right, red 60% , yellow 65%, green 70%, yellow 75%,red 82%); 
+
+}
 .slider:-moz-range-thumb {
     width: 15px;
     height: 15px;
@@ -194,6 +218,7 @@ button:hover{
     background-color: white;
     width:75%;
     margin-right: 40px;
+
 }
 
 .display-value{
@@ -207,6 +232,12 @@ button:hover{
     font-weight: 300;
 
 }
+/*.graphing{
+    height: 300px;
+    background-color: blue;
+    width:75%;
+
+}*/
 /*
 **Tools Page
 */
@@ -224,6 +255,7 @@ div.table-label{
     background-color: #116466;
     color: white;
     padding: 7px;
+    
 }
 div.first-row{
     border-top: none ;
@@ -256,9 +288,9 @@ div.condition{
     font-weight: 400;
 }
 
-  .description-about{
+.description-about{
       margin: 1%;
       color: #116466;
       font-weight: 100;
       font-size: 20px;
-  }
+}

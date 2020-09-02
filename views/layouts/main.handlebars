@@ -3,10 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css" media="screen">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap" rel="stylesheet">         <link rel="stylesheet" href="styles.css" media="screen">
+         <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Pragati+Narrow:wght@400;700&display=swap" rel="stylesheet"> 
         <!-- This 3rd-party stylesheet incorporates SVG icons from Font Awesome: http://fontawesome.com/ -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" crossorigin="anonymous">
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>        {{#if instrument}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>     
+{{#if instrument}}
             <script src= 'instruments.js' defer></script>
             <script src= 'script.js' defer></script>
         {{/if}}
@@ -14,23 +18,25 @@
             <script src= 'oscillators.js' defer></script>
             <script src= 'script.js' defer></script>
         {{/if}}
-        <title>Heart Rate Monitor</title>
+        <title>New Electronic Vital Sign Monitor</title>
     </head>
     <body>
-        <div class = "header">
-            <i class="fa fa-heartbeat fa-3x logo" aria-hidden="true"></i> 
-            <h1> Heart Rate Monitor Comparison</h1>
-        </div>
         <div class="nav">
           <div class="navbar"> </div>
           <div class="navbar"><a href="/home">Home</a></div>
           <div class="navbar"><a href="/oscillators">Oscillators</a></div>
           <div class="navbar"><a href="/instruments">Instruments</a></div>
-          <div class="navbar"><a href="/tools">Tools</a></div>
           <div class="navbar"><a href="/about">About</a></div>
 
 
         </div> 
         {{{body}}}
+        <div class='footer'>
+            New Electronic <br>Vital Sign Monitor
+            <div class= 'authors'>
+                Created by: Chitali Buge<br>
+                Mentor: Professor Patrick Donnelly
+            </div>
+        </div>
     </body>
 </html>

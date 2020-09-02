@@ -1,11 +1,185 @@
-<h2 class = 'title'> About </h2>
-<div class = 'description-about'>
-    The new innovative Heart Rate Monitor integrates oxygen content into the audio that already accounts for heart rate and blood pressure.<br><br>
-    Heart rate is heard based on rhythm, the longer the pauses, the slower the heart rate. Meanwhile, blood pressure is based on pitch. 
-    The higher the pitch, the higher the blood pressure.<br><br> With pitch and rhythm already in use, the only option left to change was timbre. 
-    Thus, oxygen level alters timbre in the audio. Timbre is essentially what makes an instrument and instrument. It is the factor that differentiate sound
-    from a cello and one from a trumpet. Thus if a patient had 99% oxygen content level, then it would be 99% one instrument or oscillator and 1% a different 
-    instrument or oscillator.<br><br> By conveying oxygen content through timbre, medicial professionals can easily recognize a patient's oxygen level, 
-    heart rate, and blood pressure just listening to the audio. This minimizes the need for these professionals to glance at the screen to check 
-    if the oxygen content is at a proper level.
+<h2 class = 'title'> ABOUT </h2>
+<div class= "content">
+    <div class = 'subheading'>
+    What's the Electronic Vital Sign Montior?
+    </div>
+    <div class = 'description'>
+        <div class= 'ESVM'>
+            <div>
+            <a href="https://www.webmd.com/cancer/vital-signs-monitor#1">
+            <img class= 'monitor-image' src="Vitals.jpg" alt="Electronic Vital Sign Monitor">
+            </a>
+            </div>
+            <div>
+                The Electronic Vital Sign Monitor is a machine that generally measures heart rate, blood pressure, oxygen level, body temperature, and respiratory rate. The current monitor deployed in hospitals audibly represents only heart rate and blood pressure. Heart rate is sonified through rhythm and blood pressure through pitch. Heart rate is sonified through rhythm: the audible beep indicates a heartbeat and the silence signifies the gap between each heartbeat. Blood pressure is sonified into audio by pitch: the higher the pitch, the higher the blood pressure. 
+            </div>
+        </div>
+    </div>
+
+    <div class = 'subheading'>
+        What's New?
+    </div>
+    <div class = 'description'>
+        Oxygen level is added to the current audio that includes heart rate and blood pressure audio through timbre. Timbre is the third dimension of sound; it is what differentiates one instrument sound from another.
+    </div>
+    <div class = 'subheading'>
+        How is it Done?
+        </div>
+    <div class = 'description'>
+        Two different sound sources, oscillators (synthesized square and sine sound waves) and musical instruments (cello and French horn), in their ability to represent oxygen content as timbre. The two oscillators are combined by playing both oscillators at the same time at different volumes to create a range of timbres. In contrast, the instruments are combined through interpolating the timbre using a neural network. These two methods of timbre, sonified alongside pitch and rhythm generate the audio signal of the new Electronic Vital Sign Monitor.
+
+    </div>
+    <div class= 'sub-subheading'>
+        What are the Ranges?
+    </div>
+    <div class = 'description sub-description'>
+       The blood pressure and oxygen level audio’s ranges are created to help medical professionals easily differentiate between dangerous and healthy situations. For more information look at the graphs below. These ranges are also reflected on the sliders where red represents danger, yellow caution and green healthy. IT is important to note that these values are based on the average adult. They can vary from person to person depending on age, medical history, gender, etc.
+       <div class = 'table-container'>
+    <div class = 'table-label'> Blood Oxygen Percentage (SpO2)</div>
+    <div class = 'table-label'> Instrument/Oscillator 1 Percentage</div>
+    <div class = 'table-label'> Instrument/Oscillator 2 Percentage</div>
+    <div class = 'table-label'> Medical Condition </div>
+
+    <div class= 'first-row'> 0% - 80% </div>
+    <div class= 'first-row'> 100% </div>
+    <div class= 'first-row'> 0% </div>
+    <div class= 'first-row condition'> Dangerous to Organs </div>
+
+    <div> 80% - 85% </div>
+    <div> 90% </div>
+    <div> 10% </div>
+    <div class = 'condition'>Severly Hypoxic</div>
+    <div> 85% - 88% </div>
+    <div> 80% </div>
+    <div> 20% </div>
+    <div class = 'condition'> Hypoxic / Normal in People with COPD</div>
+    <div> 88% - 90% </div>
+    <div> 70% </div>
+    <div> 30% </div>
+    <div></div>
+    <div> 90% - 91% </div>
+    <div> 60% </div>
+    <div> 40% </div>
+    <div></div>
+    <div> 91% - 92% </div>
+    <div> 50% </div>
+    <div> 50% </div>
+    <div></div>
+    <div> 92% - 95% </div>
+    <div> 40% </div>
+    <div> 60% </div>
+    <div class = 'condition'>Mild Hypoxic</div>
+    <div> 95% - 96% </div>
+    <div> 30% </div>
+    <div> 70% </div>
+    <div class = 'condition'> Normal in healthy individuals</div>
+    <div> 96% - 98% </div>
+    <div> 20% </div>
+    <div> 80% </div>
+    <div></div>
+    <div> 98% - 100% </div>
+    <div> 10% </div>
+    <div> 90% </div>
+    <div></div>
+    <div> 100% </div>
+    <div> 0% </div>
+    <div> 100% </div>
+    <div class = 'condition'> Pefect</div>
+
+</div>
+<div class = 'table-container table-2'>
+    <div class = 'table-label'> Blood Pressure (mmHg) </div>
+    <div class = 'table-label'> Instrument Note</div>
+    <div class = 'table-label'> Frequency( Hz)</div>
+    <div class = 'table-label'> Medical Condition </div>
+
+    <div class= 'first-row'>  0 - 30 </div>
+    <div class= 'first-row'> E2 </div>
+    <div class= 'first-row'> 82.41</div>
+    <div class= 'first-row condition'>Dangerously Low Blood Pressure </div>
+
+    <div> 30 - 40 </div>
+    <div> Gb2 </div>
+    <div> 92.50 </div>
+    <div></div>
+    <div> 40 - 50 </div>
+    <div> Ab2 </div>
+    <div> 103.83 </div>
+    <div></div>
+    <div> 50 - 60 </div>
+    <div> Bb2 </div>
+    <div> 116.54 </div>
+    <div></div>
+    <div> 60 - 70 </div>
+    <div> C3 </div>
+    <div> 130.81</div>
+    <div class = 'condition'>Too Low Blood Pressure</div>
+    <div> 70 - 80 </div>
+    <div> D3 </div>
+    <div> 146.83 </div>
+    <div></div>
+    <div> 80 - 90 </div>
+    <div> E3 </div>
+    <div> 164.81 </div>
+    <div></div>
+    <div> 90 - 100 </div>
+    <div> Gb3 </div>
+    <div> 185.00</div>
+    <div class = 'condition'>Borderline Low Blood Pressure</div>
+    <div> 110 - 120 </div>
+    <div> Ab3 </div>
+    <div> 207.65 </div>
+    <div class = 'condition'>Low Normal Blood Pressure</div>
+    <div> 120 - 130 </div>
+    <div> Bb3 </div>
+    <div> 233.08 </div>
+    <div class = 'condition'>Normal Blood Pressure</div>
+    <div> 130 - 140 </div>
+    <div> C4 </div>
+    <div> 261.63</div>
+    <div class = 'condition'>High Normal Blood Pressure</div>
+    <div> 140 - 150 </div>
+    <div> D4 </div>
+    <div> 293.66 </div>
+    <div class = 'condition'>High Blood Pressure (Hypertension) Stage 1</div>
+    <div> 150 - 160 </div>
+    <div> E4</div>
+    <div> 329.63</div>
+    <div></div>
+    <div> 160 - 170 </div>
+    <div> Gb4 </div>
+    <div> 369.99 </div>
+    <div class = 'condition'>Hypertension Stage 2</div>
+    <div> 170 - 180 </div>
+    <div> Ab4 </div>
+    <div> 415.30 </div>
+    <div></div>
+    <div> 180 - 190 </div>
+    <div> Bb4 </div>
+    <div> 466.16</div>
+    <div class = 'condition'>Hypertension Stage 3</div>
+    <div> 190 - 200 </div>
+    <div> C5 </div>
+    <div> 523.25 </div>
+    <div></div>
+    <div> 200 - 210 </div>
+    <div> D5 </div>
+    <div> 587.33 </div>
+    <div></div>
+    <div> 210+ </div>
+    <div> E5 </div>
+    <div> 659.26</div>
+    <div class = 'condition'>Hypertension Stage 4</div>
+
+</div>
+    </div>
+
+
+    <div class = 'subheading'>
+        What are the Applications?
+        </div>
+    <div class = 'description'>
+        This new Electronic Vital Sign Monitor would allow medical professionals to allocate more visual focus on patients rather than on the electronic monitors. This innovation allows them to give their undivided attention to the patient rather than splitting their field of vision between the patient and the monitor screen. This is just one application, but the ability to dynamically sonifying timbres has implications to advance data sonification throughout the  medical field.
+
+    </div>
 </div>

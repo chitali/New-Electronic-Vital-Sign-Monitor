@@ -57,14 +57,6 @@ function playNewModelAudio(){
     gain.gain.setValueAtTime(gain.gain.value, currentTime)
     gain.gain.exponentialRampToValueAtTime(RAMP_VALUE, currentTime + RAMP_DURATION)
 
-    osc.onended = function () {
-    gain.disconnect(context.destination)
-    oscGain1.disconnect(gain)
-    oscGain.disconnect(gain)
-    osc.disconnect(oscGain)
-    osc1.disconnect(oscGain1)
-    }
-
     osc.type = 'sine'
     osc1.type='square'
     osc.frequency.value = frequencySetter()
@@ -109,7 +101,7 @@ function frequencySetter(){
     else if(bp>= 190 && bp< 200) frequency =  587.33;  
     else if(bp>= 200 && bp< 210) frequency = 659.26;  
     else if(bp>= 210) frequency = 739.99; 
-
+    console.log(frequency);
     return frequency;
 }
 
@@ -120,36 +112,3 @@ function frequencySetter(){
 function checkifInstrumentSelected(){
     return true;
 }
-
-var ctxs;
-var os;
-function flatLine(living){
-    ctxs = new AudioContext();
-    os = ctxs.createOscillator()
-    os.connect(ctxs.destination);
-    os.start();
-    /*(function straightLine(){
-            if( living == true){
-            ctx.beginPath();
-            ctx.lineTo(x+=10,75);
-            ctx.lineTo(x+=10,75);
-            ctx.stroke();
-            if(x + 100 >= canvas.width){
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                x=0;
-                ctx.moveTo(0,75);
-                ctx.beginPath();
-                ctx.lineWidth = 0.7;
-            }
-            setTimeout(straightLine, 100)
-        }
-
-    })(0)*/
-
-      
-}
- function isAlive(){
-     os.stop();
-     console.log("stopped")
-     living = true;
- }

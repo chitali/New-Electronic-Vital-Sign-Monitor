@@ -3,7 +3,7 @@
 */
 var RAMP_VALUE = 0.00001
 var RAMP_DURATION = 1.5
-var stopclicked = false;
+var stopisclicked = false;
 
 var sliders = document.getElementsByClassName("slider");
 var currentModelBtn = document.getElementById("current-model");
@@ -17,9 +17,10 @@ var canvas = document.getElementById("graph");
 var interfaceContainer = document.getElementById('interface').scrollWidth;
 interfaceContainer *= .75
 canvas.width = interfaceContainer;
-window.addEventListener("resize", canvasResize);
-
-
+//window.addEventListener("resize", canvasResize);
+var interval;
+var graphingstart = false;
+var timeOuts;
 
 /*
 **Event Listeners
@@ -27,7 +28,9 @@ window.addEventListener("resize", canvasResize);
 currentModelBtn.addEventListener('click', currentModel);
 newModelBtn.addEventListener('click', newModel);
 playBtn.addEventListener('click', play);
-for(var i=0; i<(sliders.length); i++) {
+stopBtn.addEventListener('click', stopClicked);
+
+for(var i=0; i<sliders.length; i++) {
     sliders[i].addEventListener('input', function() {
         var tempSlider = this.getAttribute('id')+'val';
         document.getElementById(tempSlider).textContent = this.value;
@@ -46,10 +49,10 @@ for(var i=0; i<(sliders.length); i++) {
 function currentModel(event){
     document.getElementById("cur").style.pointerEvents = "auto";
     document.getElementById("cur").style.opacity = 1;
-    currentModelBtn.style.backgroundColor = "#2c3531";
+    currentModelBtn.style.backgroundColor = "#e5474b";
     document.getElementById("new").style.pointerEvents = "none";
     document.getElementById("new").style.opacity = 0.4;
-    newModelBtn.style.backgroundColor = "#116466";
+    newModelBtn.style.backgroundColor = "white";
     model = 1;
 }
 
@@ -60,10 +63,11 @@ function currentModel(event){
 function newModel(event){
     document.getElementById("new").style.pointerEvents = "auto";
     document.getElementById("new").style.opacity = 1;
-    newModelBtn.style.backgroundColor = "#2c3531";
+    newModelBtn.style.backgroundColor = "#e5474b";
+
     document.getElementById("cur").style.pointerEvents = "none";
     document.getElementById("cur").style.opacity = 0.4;
-    currentModelBtn.style.backgroundColor = "#116466";
+    currentModelBtn.style.backgroundColor = "white";
 
     model = 2;
 }
@@ -73,12 +77,29 @@ function newModel(event){
 **Description: Determines which frequency should be played depending on Blood Pressure
 ****************************************************************/
 function play(){
-    if(model === 0){
-        alert("Please Choose A Model");
+    updateInterfaceVitalValues();
+    for(var i=0; i<2; i++){
+        sliders[i].addEventListener('input', intervalTime);
     }
+    for(var i=5; i<8; i++){
+        sliders[i].addEventListener('input', intervalTime);
+    }
+    for(var i=0; i<sliders.length; i++){
+        sliders[i].addEventListener('input', updateInterfaceVitalValues);
+    }   
+    if(model === 0) alert("Please Choose A Model");
     else if (model == 1 || checkifInstrumentSelected() == true){ 
         playBtn.style.display = 'none';
         stopBtn.style.display = 'block';
+        document.getElementById('labels').style.display = 'none';
+        
+        var temp = document.getElementsByClassName('instuments-type');
+        if(temp[0]){
+            temp[0].disabled = true;
+            temp[1].disabled = true;
+        } 
+        graphingstart = true;
+        graph();
         beep();
     }
 }
@@ -86,17 +107,33 @@ function play(){
 **Name:stopBtn.addEventListener
 **Description: If the stop button is clicked set stopclicked to true to end loop
 ****************************************************************/
-stopBtn.addEventListener('click', stopClicked);
 function stopClicked(){
+    for(var i=0; i<2; i++){
+        sliders[i].removeEventListener('input', intervalTime);
+    }
+    for(var i=5; i<8; i++){
+        sliders[i].removeEventListener('input', intervalTime);
+    }
+    for(var i=0; i<sliders.length; i++){
+        sliders[i].removeEventListener('input', updateInterfaceVitalValues);
+    }
     playBtn.style.display = 'block';
     stopBtn.style.display = 'none';
+
     var temp = document.getElementsByClassName('instuments-type');
     if(temp[0]){
         temp[0].disabled = false;
         temp[1].disabled = false;
     } 
-    stopclicked = true;
-    if(living == false) isAlive();
+    stopisclicked = true;
+    graphingstart = false
+    if(os!= null && interval == Infinity){
+        isAlive()
+        if (stopisclicked == true){
+            stopisclicked = false;    
+        }
+    }
+
  }
 
 /***************************************************************
@@ -105,83 +142,85 @@ function stopClicked(){
 **Resource Description: Adapted from brower-beep node modules 
 **Resource: https://www.npmjs.com/package/browser-beep
 ****************************************************************/
-var living = true;
-function beep () {
-    var interval;
-    var interfaceValues = document.getElementById('labels');
+function updateInterfaceVitalValues(){
     var displayValue = document.getElementsByClassName('val'); 
-    
-
-    (function loop () {
-        if (model == 2 && checkifInstrumentSelected() == false){ 
-            stopClicked();
-            return;
+    if(model == 1){
+        interval = (60 / sliders[0].value) * 1000;
+        displayValue[0].textContent = sliders[0].value;
+        displayValue[1].textContent = sliders[1].value;
+        displayValue[2].textContent = sliders[2].value;
+        displayValue[3].textContent = sliders[3].value;
+        displayValue[4].textContent = sliders[4].value;
+        var celsius = (sliders[4].value - 32) * (5/9);
+        celsius = Math.round(celsius * 10) / 10;
+        document.getElementById('temps').textContent = "°F  (" + celsius + "°C)"
+    }
+    else if(model == 2){
+        interval = (60 / sliders[5].value) * 1000;
+        displayValue[0].textContent = sliders[5].value;
+        displayValue[1].textContent = sliders[6].value;
+        displayValue[2].textContent = sliders[7].value;
+        displayValue[3].textContent = sliders[8].value;
+        displayValue[4].textContent = sliders[9].value;
+        var celsius = (sliders[9].value - 32) * (5/9);
+        celsius = Math.round(celsius * 10) / 10;
+        document.getElementById('temps').textContent = "°F  (" + celsius + "°C)"
+    }
+ 
+}
+function intervalTime(){
+   
+    if(model == 1)
+        interval = (60 / sliders[0].value) * 1000;
+    else if(model == 2)
+        interval = (60 / sliders[5].value) * 1000;
+    clearTimeout(timeOuts);
+    if(os!= null && interval != Infinity){isAlive();}   
+    beep();
+}
+var pausing = true;
+function beep(){
+    if (stopisclicked == true){
+        stopisclicked = false;    
+        return 0;
+    }
+    if(model === 1){
+        if(interval == Infinity) flatLine();
+        if(interval != Infinity){ 
+            pausing = false;
+            playCurModelAudio();
+            timeOuts = setTimeout(beep, interval)
         }
-        if (stopclicked === true){
-            stopclicked = false;
+    }
+    else if(model === 2){
+        if (checkifInstrumentSelected() == false){
+            stopClicked();    
+            stopisclicked = false;
             return 0;
         }
-        else{
-            if(model === 1){
-                interval = (60 / sliders[0].value) * 1000;
-                displayValue[0].textContent = sliders[0].value;
-                displayValue[1].textContent = sliders[1].value;
-                displayValue[2].textContent = sliders[2].value;
-                displayValue[3].textContent = sliders[3].value;
-                displayValue[4].textContent = sliders[4].value;
-                var celsius = (sliders[4].value - 32) * (5/9);
-                celsius = Math.round(celsius * 10) / 10;
-                document.getElementById('temps').textContent = "°F  (" + celsius + "°C)"
-                interfaceValues.style.display = 'block';
-                if(sliders[0].value != 0){
-                    console.log('here');
-                    if(living == false) isAlive();
-                    graphing(interval);
-                    sliders[0].removeEventListener('input', loop);
-                    playCurModelAudio();
-                    setTimeout(loop, interval)
-                }
-                else{
-                    living = false;
-                    sliders[0].addEventListener('input', loop);
-                    flatLine(living); 
-
-                }
-            }
-            else if (model === 2){
-                var temp = document.getElementsByClassName('instuments-type');
-                if(temp[0]){
-                    var temp = document.getElementsByClassName('instuments-type');
-                    temp[0].disabled = true;
-                    temp[1].disabled = true;
-                }
-                interval = (60 / sliders[5].value) * 1000;
-                graphing(interval);
-                displayValue[0].textContent = sliders[5].value;
-                displayValue[1].textContent = sliders[6].value;
-                displayValue[2].textContent = sliders[7].value;
-                displayValue[3].textContent = sliders[8].value;
-                displayValue[4].textContent = sliders[9].value;
-
-                interfaceValues.style.display = 'block';
-
-                if(sliders[5].value != 0){
-                    sliders[5].removeEventListener('input', loop);
-                    playNewModelAudio();
-                    setTimeout(loop, interval)
-                    
-                }
-                else{
-                    sliders[5].addEventListener('input', loop); 
-                }
-                
-            }
+        if(interval == Infinity) flatLine();
+        if(interval != Infinity){ 
+            playNewModelAudio();            
+            timeOuts = setTimeout(beep, interval)
         }
         
-         
-    })(0)
+    }
+
 }
 
+var ctxs;
+var os;
+function flatLine(){
+    ctxs = new AudioContext();
+    os = ctxs.createOscillator();
+    os.frequency.value = 466.164;
+    os.connect(ctxs.destination);
+    os.start();
+}
+ function isAlive(){
+     os.stop();
+ }
+       
 /***************************************************************
 **Name:o2range
 **Description: Determines the oxygen amount for each range
@@ -206,7 +245,7 @@ function o2range(){
 /*
 graph
 */
-var ctx = canvas.getContext("2d");
+/*var ctx = canvas.getContext("2d");
 var x = 0;
 ctx.moveTo(0,75);
 ctx.lineWidth = 0.7;
@@ -248,7 +287,171 @@ function graphing(interval){
         ctx.closePath();
     }
 
+}*/
+/***************************************************************
+**Name:
+**Description:
+****************************************************************/
+function getData(vital){
+    if(model == 1){
+        if(vital == "bp") return sliders[1].value
+        if(vital == "o2") return sliders[2].value
+        if(vital == "rr") return sliders[3].value
+        if(vital == "temp") return sliders[4].value
+
+    }else{
+        if(vital == "bp") return sliders[6].value
+        if(vital == "o2") return sliders[7].value
+        if(vital == "rr") return sliders[8].value
+        if(vital == "temp") return sliders[9].value
+    }
+}
+
+function graph(){
+    // test();
+    // graphBP();
+    // graphO2();
+    // graphRR();
+    // graphTemp();
+}
+function test(){
+    var ctx = document.getElementById('g').getContext('2d');
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                data: [0, 10, 5, 2, 20, 30, 45]
+            }]
+        },
+    
+        options:{}
+    });
+}
+
+function getHRData(){
+    if(pausing == true) return 50;
+    else{
+        var ekg = [60,40,70,30,60]
+        pausing = true;
+        return ekg;
+    }
+    // ctx.lineTo(x+=10,75);
+    // ctx.lineTo(x+=10,75);
+    // ctx.lineTo(x+=10,60);
+    // ctx.lineTo(x+=10,90);
+    // ctx.lineTo(x+=10,20);
+    // ctx.lineTo(x+=10, 120);
+    // ctx.lineTo(x+=10, 75);
+    // ctx.lineTo(x+=10,75);
+    // ctx.lineTo(x+=10, 60);
+    // ctx.lineTo(x+=10,75);
+    // ctx.lineTo(x+=interval/50,75);
+}
+function graphHR(){
+    Plotly.plot('graph',[{
+        y:[getHRData()],
+        type:'line'
+    }]);
+    var cnt = 0;
+    var intervalgraph = setInterval(function(){
+        if(graphingstart == false){
+            Plotly.deleteTraces('graph', 0);
+            clearInterval(intervalgraph);
+        }
+        Plotly.extendTraces('graph', {y:[[getHRData()]]}, [0]);
+        cnt++;
+        if(cnt > 20){
+            Plotly.relayout('graph', {
+                xaxis: { range: [cnt-20, cnt]}
+            })
+        }
+    }, 180)
+}
+function graphBP(){
+    Plotly.plot('graph1',[{
+        y:[getData("bp")],
+        type:'line'
+    }]);
+    var cnt = 0;
+    var intervalgraph = setInterval(function(){
+        if(graphingstart == false){
+            Plotly.deleteTraces('graph1', 0);
+            clearInterval(intervalgraph);
+        }
+        Plotly.extendTraces('graph1', {y:[[getData("bp")]]}, [0]);
+        cnt++;
+        if(cnt > 20){
+            Plotly.relayout('graph1', {
+                xaxis: { range: [cnt-20, cnt]}
+            })
+        }
+    }, 200)
     
 }
-//https://www.youtube.com/watch?v=QjEyjmNkN3k&list=RDyEb4kojtVHw&index=3
-//https://www.youtube.com/watch?v=jcXidSeirMU&t=9s  
+function graphO2(){
+    Plotly.plot('graph2',[{
+        y:[getData("o2")],
+        type:'line'
+    }]);
+    var cnt = 0;
+    var intervalgraph = setInterval(function(){
+        if(graphingstart == false){
+            Plotly.deleteTraces('graph2', 0);
+            clearInterval(intervalgraph);
+        }
+        Plotly.extendTraces('graph2', {y:[[getData("o2")]]}, [0]);
+        cnt++;
+        if(cnt > 20){
+            Plotly.relayout('graph2', {
+                xaxis: { range: [cnt-20, cnt]}
+            })
+        }
+    }, 200)
+    
+}
+
+function graphRR(){
+    Plotly.plot('graph3',[{
+        y:[getData("rr")],
+        type:'line'
+    }]);
+    var cnt = 0;
+
+    var intervalgraph = setInterval(function(){
+        if(graphingstart == false){
+            Plotly.deleteTraces('graph3', 0);
+            clearInterval(intervalgraph);
+        }
+        Plotly.extendTraces('graph3', {y:[[getData("rr")]]}, [0]);
+        cnt++;
+        if(cnt > 20){
+            Plotly.relayout('graph3', {
+                xaxis: { range: [cnt-20, cnt]}
+            })
+        }
+    }, 200)
+    
+}
+function graphTemp(){
+    Plotly.plot('graph4',[{
+        y:[getData("temp")],
+        type:'line'
+    }]);
+    var cnt = 0;
+    var intervalgraph = setInterval(function(){
+        if(graphingstart == false){
+            Plotly.deleteTraces('graph4', 0);
+            clearInterval(intervalgraph);
+        }
+        Plotly.extendTraces('graph4', {y:[[getData("temp")]]}, [0]);
+        cnt++;
+        if(cnt > 20){
+            Plotly.relayout('graph4', {
+                xaxis: { range: [cnt-20, cnt]}
+            })
+        }
+    }, 200)
+    
+}
+
+
