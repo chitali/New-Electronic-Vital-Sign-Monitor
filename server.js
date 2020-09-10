@@ -30,10 +30,6 @@ app.get('/instruments', function (req, res) {
     });
   
 });
-app.get('/tools', function (req, res, next) {
-  res.render('tool');
-
-});
 app.get('/about', function (req, res) {
   res.render('about');
 

@@ -204,7 +204,7 @@ Oscillators/Instruments
     -webkit-appearance: none;
     border-radius: 10px;
     opacity: .5;
-    width: 78%;
+    width: 90%;
     height: 10px;
 }
 #slider1, #slider6{
@@ -238,4 +238,17 @@ Oscillators/Instruments
     position: relative;
     top:-15px;
     color: black;
+}
+/* Interface */
+
+
+.val{
+    font-size: 30px;
+    color: #e5474b;
+}
+.display-value{
+    
+    float: right;
+    margin-top: -70px;
+ 
 }

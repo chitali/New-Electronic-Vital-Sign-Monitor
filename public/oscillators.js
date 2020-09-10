@@ -101,7 +101,6 @@ function frequencySetter(){
     else if(bp>= 190 && bp< 200) frequency =  587.33;  
     else if(bp>= 200 && bp< 210) frequency = 659.26;  
     else if(bp>= 210) frequency = 739.99; 
-    console.log(frequency);
     return frequency;
 }
 
