@@ -1,9 +1,8 @@
 /***************************************************************
 **Name:playCurModelAudio
 **Description: Plays a single beep
-**Resource: 
-****Description: Adapted from brower-beep node modules 
-****URL: https://www.npmjs.com/package/browser-beep
+**Resource: https://teropa.info/blog/2016/09/20/additive-synthesis.html
+**Adapted / Used as reference
 ****************************************************************/
 function playCurModelAudio() {
 
@@ -11,18 +10,14 @@ function playCurModelAudio() {
     var currentTime = context.currentTime
     var osc = context.createOscillator()
     var gain = context.createGain()
-
     osc.connect(gain)
     gain.connect(context.destination)
-
     gain.gain.setValueAtTime(gain.gain.value, currentTime)
     gain.gain.exponentialRampToValueAtTime(RAMP_VALUE, currentTime + RAMP_DURATION)
-
     osc.onended = function () {
     gain.disconnect(context.destination)
     osc.disconnect(gain)
     }
-
     osc.type = 'sine'
     osc.frequency.value = frequencySetter()
     osc.start(currentTime)
@@ -32,9 +27,8 @@ function playCurModelAudio() {
 /***************************************************************
 **Name:playNewModelAudio
 **Description: Plays a single beep that interpolates two different oscillators
-**Resource: 
-****Description: Adapted from brower-beep node modules 
-****URL: https://www.npmjs.com/package/browser-beep
+**Resource: https://teropa.info/blog/2016/09/20/additive-synthesis.html
+**Adapted / Used as reference
 ****************************************************************/
 function playNewModelAudio(){
     var o2content = o2range();
@@ -45,7 +39,6 @@ function playNewModelAudio(){
     var gain = context.createGain();
     var oscGain = context.createGain();
     var oscGain1 = context.createGain();
-
     osc.connect(oscGain);
     osc1.connect(oscGain1);
     oscGain.connect(gain);

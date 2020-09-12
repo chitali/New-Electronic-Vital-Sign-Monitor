@@ -1,27 +1,29 @@
-/*
-**Global Variables
-*/
+/***************************************************************
+**Name: Global Variables
+****************************************************************/
 var RAMP_VALUE = 0.00001
 var RAMP_DURATION = 1.5
-var stopisclicked = false;
-
 var sliders = document.getElementsByClassName("slider");
 var currentModelBtn = document.getElementById("current-model");
 var newModelBtn = document.getElementById("new-model");
-
 var model = 0;
 var playBtn = document.getElementById("play");
 var stopBtn= document.getElementById('stop');
-
-var canvas = document.getElementById("graph");
-var interfaceContainer = document.getElementById('interface').scrollWidth;
-interfaceContainer *= .75
-canvas.width = interfaceContainer;
 var interval;
 var graphingstart = false;
-var timeOuts;
+var pausing = true;
+var ctxs;
+var os;
+var count = 0;
+var widths = document.getElementsByClassName('content');
+widths = widths[0].offsetWidth * .8;
 
-//https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
+/***************************************************************
+**Name: AdjustingInterval
+**Description: More precise Timeout function than the inbuilt JS library timeout function
+**Resource: https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
+**Author: Leon Williams
+****************************************************************/
 function AdjustingInterval(workFunc, interval, errorFunc) {
     var that = this;
     var expected, timeout;
@@ -39,7 +41,6 @@ function AdjustingInterval(workFunc, interval, errorFunc) {
     function step() {
         var drift = Date.now() - expected;
         if (drift > that.interval) {
-            // You could have some default stuff here too...
             if (errorFunc) errorFunc();
         }
         workFunc();
@@ -47,34 +48,33 @@ function AdjustingInterval(workFunc, interval, errorFunc) {
         timeout = setTimeout(step, Math.max(0, that.interval-drift));
     }
 }
-
+/***************************************************************
+**Name: doWork
+**Description: Plays am audio beep of the current/new model 
+****************************************************************/
 var doWork = function() {
-    console.log("interval " + interval);
     if(model === 1){  
         pausing = false;
-        console.log(new Date().getMilliseconds());
         playCurModelAudio();
     }
     else if(model === 2){
-    
         pausing = false;
         playNewModelAudio();            
-        
     }
-
 };
 
-// Define what to do if something goes wrong
+/***************************************************************
+**Name:doError
+**Description:Prints out a console warning if timeOut begins to lag too much
+****************************************************************/
 var doError = function() {
     console.warn('The drift exceeded the interval.');
 };
-
-// (The third argument is optional)
 var ticker = new AdjustingInterval(doWork, 1000, doError);
 
-/*
-**Event Listeners
-*/
+/***************************************************************
+**Name: Event Listeners
+****************************************************************/
 currentModelBtn.addEventListener('click', currentModel);
 newModelBtn.addEventListener('click', newModel);
 playBtn.addEventListener('click', play);
@@ -93,8 +93,8 @@ for(var i=0; i<sliders.length; i++) {
 }
 
 /***************************************************************
-**Name:currentModel
-**Description:Opens Dropdown of current model sliders
+**Name: currentModel
+**Description: Enables model sliders after model chosen and disables the other 
 ****************************************************************/
 function currentModel(event){
     document.getElementById("cur").style.pointerEvents = "auto";
@@ -107,24 +107,22 @@ function currentModel(event){
 }
 
 /***************************************************************
-**Name:newModel
-**Description:Opens Dropdown of new model sliders
+**Name: newModel
+**Description: Enables model sliders after model chosen and disables the other 
 ****************************************************************/
 function newModel(event){
     document.getElementById("new").style.pointerEvents = "auto";
     document.getElementById("new").style.opacity = 1;
     newModelBtn.style.backgroundColor = "#e5474b";
-
     document.getElementById("cur").style.pointerEvents = "none";
     document.getElementById("cur").style.opacity = 0.4;
     currentModelBtn.style.backgroundColor = "white";
-
     model = 2;
 }
 
 /***************************************************************
-**Name:frequencySetter
-**Description: Determines which frequency should be played depending on Blood Pressure
+**Name: play
+**Description: Enables the event listers, graphing and the beeps when clicked play
 ****************************************************************/
 function play(){
     if(model === 0) alert("Please Choose A Model");
@@ -144,7 +142,6 @@ function play(){
         playBtn.style.display = 'none';
         stopBtn.style.display = 'block';
         document.getElementById('interface').style.display = 'block';
-        
         var temp = document.getElementsByClassName('instuments-type');
         if(temp[0]){
             temp[0].disabled = true;
@@ -163,8 +160,8 @@ function play(){
     }
 }
 /***************************************************************
-**Name:stopBtn.addEventListener
-**Description: If the stop button is clicked set stopclicked to true to end loop
+**Name: stopClicked
+**Description: Disables the event listers, graphing and the beeps when clicked stop
 ****************************************************************/
 function stopClicked(){
     for(var i=0; i<2; i++){
@@ -195,10 +192,8 @@ function stopClicked(){
  }
 
 /***************************************************************
-**Name:beep
-**Description: Determines wich model is choosen and loops through and beeps till the user stops the audio via the stop button
-**Resource Description: Adapted from brower-beep node modules 
-**Resource: https://www.npmjs.com/package/browser-beep
+**Name: 
+**Description: 
 ****************************************************************/
 function updateInterfaceVitalValues(){
     var displayValue = document.getElementsByClassName('val'); 
@@ -225,6 +220,10 @@ function updateInterfaceVitalValues(){
         document.getElementById('temps').textContent = "°F  (" + celsius + "°C)"
     }
 }
+/***************************************************************
+**Name: intervalTime
+**Description: Calculates the interval between beeps based on Heart Rate and plays the beeps
+****************************************************************/
 function intervalTime(){
     if(model == 1)
         interval = (60 / sliders[0].value) * 1000;
@@ -246,11 +245,10 @@ function intervalTime(){
         flatLine(); 
     }
 }
-
-var pausing = true;
-var ctxs;
-var os;
-
+/***************************************************************
+**Name: flatLine
+**Description: Oscillator sound for a flat line 
+****************************************************************/
 function flatLine(){
     ticker.stop();
     ctxs = new AudioContext();
@@ -259,6 +257,10 @@ function flatLine(){
     os.connect(ctxs.destination);
     os.start();
 }
+/***************************************************************
+**Name: isAlive
+**Description: Stops the flat line by stoping the oscillator
+****************************************************************/
 function isAlive(){
      os.stop();
  }
@@ -286,8 +288,8 @@ function o2range(){
 
 
 /***************************************************************
-**Name:
-**Description:
+**Name: getData
+**Description: returns the corresponding data for graphing
 ****************************************************************/
 function getData(vital){
     if(model == 1){
@@ -303,7 +305,10 @@ function getData(vital){
         if(vital == "temp") return sliders[9].value
     }
 }
-
+/***************************************************************
+**Name: graph
+**Description: Calls all the graphing functions
+****************************************************************/
 function graph(){
     graphHR();
     graphBP();
@@ -311,7 +316,10 @@ function graph(){
     graphRR();
     graphTemp();
 }
-var count = 0;
+/***************************************************************
+**Name: getHRData
+**Description: Returns heart rate data
+****************************************************************/
 function getHRData(){
     if(pausing == true) {
         count = 0;
@@ -326,6 +334,10 @@ function getHRData(){
         return 40;
     }
 }
+/***************************************************************
+**Name: graphHR
+**Description: Graphs heart rate
+****************************************************************/
 function graphHR(){
     var trace1 = {
         y:[getHRData()],
@@ -335,7 +347,6 @@ function graphHR(){
         }
     }
     var data = [trace1];
-    
     var layout = {
         autosize: false,
         margin: {
@@ -346,12 +357,13 @@ function graphHR(){
             pad: 0
           },
         height: 110 ,
-        width: widths
-    }
+        width: widths,
+        yaxis: {
+            showticklabels: false
+        }
+    };
     var config = {responsive: true}
-
     Plotly.newPlot('graph', data, layout, config)
-
     var cnt = 0;
     var intervalgraph = setInterval(function(){
         if(graphingstart == false){
@@ -367,6 +379,10 @@ function graphHR(){
         }
     }, 40)
 }
+/***************************************************************
+**Name: graphBP
+**Description: Graphs Blood Pressure
+****************************************************************/
 function graphBP(){
     var trace1 = {
         y:[getData("bp")],
@@ -376,7 +392,6 @@ function graphBP(){
         }
     }
     var data = [trace1];
-    
     var layout = {
         autosize: false,
         margin: {
@@ -390,7 +405,6 @@ function graphBP(){
         width: widths
     }
     var config = {responsive: true}
-
     Plotly.newPlot('graph1', data, layout, config)
     var cnt = 0;
     var intervalgraph = setInterval(function(){
@@ -408,9 +422,11 @@ function graphBP(){
     }, 40)
     
 }
-var widths = document.getElementsByClassName('content');
-widths = widths[0].offsetWidth * .8;
 
+/***************************************************************
+**Name: graphO2
+**Description: Graphs Oxygen Content
+****************************************************************/
 function graphO2(){
     var trace1 = {
         y:[getData("o2")],
@@ -434,10 +450,7 @@ function graphO2(){
         width: widths
     }
     var config = {responsive: true}
-
     Plotly.newPlot('graph2', data, layout, config)
-
-
     var cnt = 0;
     var intervalgraph = setInterval(function(){
         if(graphingstart == false){
@@ -454,7 +467,10 @@ function graphO2(){
     }, 40)
     
 }
-
+/***************************************************************
+**Name: graphRR
+**Description: Graphs Respiration Rate
+****************************************************************/
 function graphRR(){
     var trace1 = {
         y:[getData("rr")],
@@ -464,7 +480,6 @@ function graphRR(){
         }
     }
     var data = [trace1];
-    
     var layout = {
         autosize: false,
         margin: {
@@ -478,11 +493,8 @@ function graphRR(){
         width: widths
     }
     var config = {responsive: true}
-
     Plotly.newPlot('graph3', data, layout, config)
-
     var cnt = 0;
-
     var intervalgraph = setInterval(function(){
         if(graphingstart == false){
             Plotly.deleteTraces('graph3', 0);
@@ -498,6 +510,10 @@ function graphRR(){
     }, 40)
     
 }
+/***************************************************************
+**Name: graphTemp
+**Description: Graphs Temperature
+****************************************************************/
 function graphTemp(){
     var trace1 = {
         y:[getData("temp")],
@@ -507,7 +523,6 @@ function graphTemp(){
         }
     }
     var data = [trace1];
-    
     var layout = {
         autosize: false,
         margin: {
@@ -521,9 +536,7 @@ function graphTemp(){
         width: widths
     }
     var config = {responsive: true}
-
     Plotly.newPlot('graph4', data, layout, config)
-
     var cnt = 0;
     var intervalgraph = setInterval(function(){
         if(graphingstart == false){

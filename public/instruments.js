@@ -1,8 +1,7 @@
-/*
-** Global Variables
-*/
+/***************************************************************
+**Name: Global Variables
+****************************************************************/
 var instrument =  document.getElementsByClassName('instuments-type');
-
 
 /***************************************************************
 **Name:playCurModelAudio
@@ -56,8 +55,8 @@ function frequencySetter(){
     var frequency;
     if(model === 1) bp = sliders[1].value;
     else if(model === 2) bp = sliders[6].value;
-
     frequency = Math.floor(bp / 10 - 1); 
+    frequency = 21 - frequency;
     if (frequency < 1) frequency =  1;
     if (frequency > 20) frequency =  20;
     return String(frequency);
