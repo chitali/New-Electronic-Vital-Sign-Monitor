@@ -1,7 +1,6 @@
 # New Electronic Vital Sign Monitor Audio
-Created by: Chitali Buge <br>
-Mentor: Prof. Patrick Donnelly 
-<br><br>
+<h2> Created by: Chitali Buge <br>
+Mentor: Prof. Patrick Donnelly </h2>
 This is the source code for the website for the <a href="https://infinite-ocean-64597.herokuapp.com/">Innovative Electronic Sign Vital Monitor </a> audio. <br>
 
 The current state-of-the-art monitor typically measures heart rate, blood pressure, oxygen content, temperature, and respiration rate.
